@@ -69,7 +69,7 @@ for frame in readres:
     for i,rect in enumerate(rect_list):
         rectp = rect.get("rect")
         top, right, bottom, left = rectp[0],rectp[1],rectp[2],rectp[3]
-        top, right, bottom, left = get_m(top, right, bottom, left)
+        #top, right, bottom, left = get_m(top, right, bottom, left)
         
         
         face_image = origin_cv_image[top:bottom, left:right]
