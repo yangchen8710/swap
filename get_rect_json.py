@@ -5,10 +5,11 @@ import numpy as np
 import face_recognition
 import json
 filename = "short_hamilton_clip.mp4"
+fw = open('myu_s.json','w')
+
 reader = imageio.get_reader(filename,  'ffmpeg')
 fps = reader.get_meta_data()['fps']
 
-fw = open('myu_s.json','w')
 resall = []
 nums = [120]
 count = 30
