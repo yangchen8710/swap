@@ -35,10 +35,8 @@ def get_m(top, right, bottom, left):
     print(str(height)+":"+str(width))
     std = 0
     if height>width:
-        #std = (int)(1.0 * height / 2  / 160 * 256)
         std = (int)(1.0 * height /2)
     else:
-        #std = (int)(1.0 * width / 2  / 160 * 256)
         std = (int)(1.0 * width / 2)
     center_x, center_y = get_center(top, right, bottom, left)
     return center_y - std, center_x + std, center_y + std, center_x - std  

@@ -41,8 +41,6 @@ def cut(pil_image,top, right, bottom, left,frame,index):
         print("out2")
         return False
 
-
-
 fr = open('myu_s.json','r')
 readres = json.load(fr)
 countpic = 0
