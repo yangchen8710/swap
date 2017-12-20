@@ -43,13 +43,11 @@ def get_m(top, right, bottom, left):
 
 def convert_one_face( autoencoder, image ):
     origin_shape = image.shape
-    print(origin_shape)
     face = cv2.resize( image, (64,64) )
     face = np.expand_dims( face, 0 )
     new_face = autoencoder.predict( face / 255.0 )[0]
     new_face = np.clip( new_face * 255, 0, 255 ).astype( image.dtype )
-    #new_face = cv2.resize( new_face, (origin_shape[0],origin_shape[1]) )
-    new_face = cv2.resize( new_face, (30,60) )
+    new_face = cv2.resize( new_face, (origin_shape[1],origin_shape[0]) )
     return new_face
 
 
@@ -65,8 +63,8 @@ for frame in readres:
     pil_image = Image.fromarray(im)
     draw = ImageDraw.Draw(pil_image)
     array = np.array(pil_image)    
-    opencvImage = cv2.cvtColor(array, cv2.COLOR_RGB2BGR)
-    copyCVImage = opencvImage.copy()
+    origin_cv_image = cv2.cvtColor(array, cv2.COLOR_RGB2BGR)
+    copy_cv_image = origin_cv_image.copy()
 
     for i,rect in enumerate(rect_list):
         rectp = rect.get("rect")
@@ -74,15 +72,15 @@ for frame in readres:
         top, right, bottom, left = get_m(top, right, bottom, left)
         
         
-        face_image = opencvImage[top:bottom, left:right]
+        face_image = origin_cv_image[top:bottom, left:right]
         new_face = convert_one_face(autoencoder_B,face_image)
         center_x, center_y = get_center(top, right, bottom, left)
-        x_offset=center_x - (int)(new_face.shape[0]/2) 
-        y_offset=center_y - (int)(new_face.shape[1]/2)
-        copyCVImage[y_offset:y_offset + new_face.shape[0], x_offset:x_offset +new_face.shape[1]] = new_face
-        cv2.imshow("full",copyCVImage)
-        cv2.waitKey((int)(1000/5))
-    cv2.imshow("full",copyCVImage)
+        x_offset=center_x - (int)(new_face.shape[1]/2) 
+        y_offset=center_y - (int)(new_face.shape[0]/2)
+        copy_cv_image[y_offset:y_offset + new_face.shape[0], x_offset:x_offset +new_face.shape[1]] = new_face
+        #cv2.imshow("1",new_face)
+        #cv2.waitKey((int)(1000/5))
+    cv2.imshow("full",copy_cv_image)
     cv2.waitKey((int)(1000/5))
         #draw.rectangle([left,top,right,bottom])
     #array = np.array(pil_image)
