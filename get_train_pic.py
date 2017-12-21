@@ -4,10 +4,10 @@ import cv2
 import numpy as np
 import face_recognition
 import json
-filename = "short_hamilton_clip.mp4"
+filename = "01.bin"
 reader = imageio.get_reader(filename,  'ffmpeg')
 fps = reader.get_meta_data()['fps']
-writer = imageio.get_writer("short_hamilton_clip_1.mp4", fps=fps)
+fr = open('0_10000.json','r')
 
 #160x160 to 256x256
 def get_m(top, right, bottom, left):
@@ -41,7 +41,7 @@ def cut(pil_image,top, right, bottom, left,frame,index):
         print("out2")
         return False
 
-fr = open('myu_s.json','r')
+
 readres = json.load(fr)
 countpic = 0
 for frame in readres:
@@ -53,9 +53,14 @@ for frame in readres:
     im = reader.get_data(count)
     pil_image = Image.fromarray(im)
     draw = ImageDraw.Draw(pil_image)
+    
     for i,rect in enumerate(rect_list):
         rectp = rect.get("rect")
         top, right, bottom, left = rectp[0],rectp[1],rectp[2],rectp[3]
+        top = (int)(top * 2)
+        right = (int)(right * 2)
+        bottom = (int)(bottom * 2)
+        left = (int)(left * 2)
         top, right, bottom, left = get_m(top, right, bottom, left)
         if(cut(pil_image,top, right, bottom, left,count,i)):
             countpic = countpic + 1
